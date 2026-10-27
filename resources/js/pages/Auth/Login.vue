@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3'
 
+const props = defineProps<{
+    demoCredentials: {
+        phone: string
+        password: string
+    } | null
+}>()
+
 const form = useForm({
     phone: '',
     password: '',
@@ -9,6 +16,15 @@ const form = useForm({
 
 function submit() {
     form.post('/login')
+}
+
+function fillDemoCredentials() {
+    if (!props.demoCredentials) {
+        return
+    }
+
+    form.phone = props.demoCredentials.phone
+    form.password = props.demoCredentials.password
 }
 </script>
 
@@ -32,6 +48,40 @@ function submit() {
                     Accédez à votre portefeuille en toute simplicité.
                 </p>
             </div>
+
+            <aside
+                v-if="demoCredentials"
+                class="mt-6 rounded-2xl border border-[#246B57]/20 bg-[#F7F6F0] p-4"
+                aria-label="Compte agent de démonstration"
+            >
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="text-sm font-bold text-[#123B35]">
+                            Compte agent de démonstration
+                        </p>
+                        <p class="mt-1 text-xs text-[#596762]">
+                            Disponible uniquement en environnement local.
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        class="rounded-lg bg-[#D5F36A] px-3 py-2 text-xs font-bold text-[#123B35] transition hover:brightness-95"
+                        @click="fillDemoCredentials"
+                    >
+                        Remplir les champs
+                    </button>
+                </div>
+                <dl class="mt-3 space-y-2 text-sm">
+                    <div class="flex flex-wrap gap-2">
+                        <dt class="font-semibold text-[#596762]">Téléphone :</dt>
+                        <dd class="font-mono text-[#18211F]">{{ demoCredentials.phone }}</dd>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <dt class="font-semibold text-[#596762]">Mot de passe :</dt>
+                        <dd class="font-mono text-[#18211F]">{{ demoCredentials.password }}</dd>
+                    </div>
+                </dl>
+            </aside>
 
             <form class="mt-8 space-y-5" @submit.prevent="submit">
                 <div>
