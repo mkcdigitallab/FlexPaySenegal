@@ -12,17 +12,17 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $wallet = $user->wallet()
-            ->first();
+        $wallet = $user->wallet()->first();
 
         $transactions = $wallet
-            ? $wallet->transactions()
-                ->latest()
-                ->limit(5)
-                ->get()
+            ? $wallet->transactions()->latest()->limit(5)->get()
             : collect();
 
-        return Inertia::render('Dashboard', [
+        $page = $user->role === 'client'
+            ? 'Client/Dashboard'
+            : 'Dashboard';
+
+        return Inertia::render($page, [
             'user' => $user->only('id', 'name', 'phone', 'role'),
             'wallet' => $wallet,
             'transactions' => $transactions,
