@@ -1,4 +1,3 @@
-```vue
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import TransactionList from '../../components/wallet/TransactionList.vue'
@@ -59,4 +58,3 @@ defineProps<{
         </div>
     </main>
 </template>
-```

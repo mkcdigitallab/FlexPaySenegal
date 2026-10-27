@@ -11,15 +11,30 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Seed the application's database with local demo data.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Never create a predictable demo account outside local/testing.
+        if (! app()->environment(['local', 'testing'])) {
+            return;
+        }
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $agent = User::updateOrCreate(
+            ['phone' => '770000001'],
+            [
+                'name' => 'Agent de démonstration',
+                'email' => null,
+                'password' => 'AgentDemo2026!',
+                'role' => 'agent',
+            ],
+        );
+
+        // A demo agent should always have a wallet, without resetting its balance
+        // if the seeder is run again.
+        $agent->wallet()->firstOrCreate([], [
+            'balance' => 0,
+            'currency' => 'XOF',
         ]);
     }
 }
