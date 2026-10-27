@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import BalanceCard from '../components/wallet/BalanceCard.vue'
 import TransactionList from '../components/wallet/TransactionList.vue'
@@ -54,8 +54,6 @@ function validateOperation(): boolean {
         errors.value.amount = 'Le montant doit être supérieur à 0 FCFA.'
     } else if (!Number.isInteger(value)) {
         errors.value.amount = 'Saisissez un montant entier en FCFA.'
-    } else if (activeOperation.value === 'withdrawal' && value > numericBalance.value) {
-        errors.value.amount = 'Le montant dépasse le solde électronique affiché pour cet agent.'
     }
 
     return Object.keys(errors.value).length === 0
