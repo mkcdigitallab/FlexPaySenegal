@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import BalanceCard from '../components/wallet/BalanceCard.vue'
 import TransactionList from '../components/wallet/TransactionList.vue'
@@ -24,8 +24,6 @@ const operationTitle = computed(() =>
     activeOperation.value === 'deposit' ? 'Nouveau dépôt' : 'Nouveau retrait',
 )
 
-const numericBalance = computed(() => Number(windowBalance.value ?? 0))
-const windowBalance = ref<number | string>(0)
 
 function openOperation(type: OperationType) {
     activeOperation.value = type
@@ -33,7 +31,6 @@ function openOperation(type: OperationType) {
     amount.value = ''
     errors.value = {}
     notice.value = ''
-    windowBalance.value = 0
 }
 
 function closeOperation() {
