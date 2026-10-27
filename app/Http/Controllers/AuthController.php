@@ -14,7 +14,15 @@ class AuthController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/Login', [
+            // Demo credentials are exposed only to local developers.
+            'demoCredentials' => app()->environment('local')
+                ? [
+                    'phone' => '770000001',
+                    'password' => 'AgentDemo2026!',
+                ]
+                : null,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
